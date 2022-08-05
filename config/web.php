@@ -49,12 +49,13 @@ $config = [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'user',
+                    'controller' => ['user', 'property'],
                     'patterns' => [
                         'GET index' => 'index',
                         'POST update/{id}' => 'update',
                         'POST create' => 'create',
-                        'DELETE delete/{id}' => 'delete'
+                        'DELETE delete/{id}' => 'delete',
+                        'GET images/{id}' => 'images'
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d[\\d,]*>',

@@ -2,17 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\User;
-use app\models\UserSearch;
+use app\models\Property;
+use app\models\PropertySearch;
 use yii\filters\auth\HttpHeaderAuth;
-use yii\rest\ActiveController;
-use Yii;
 use yii\rest\Controller;
+use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class UserController extends Controller
+class PropertyController extends Controller
 {
     public function init()
     {
@@ -25,8 +24,8 @@ class UserController extends Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => HttpHeaderAuth::class,
-            'optional' => ['create']
         ];
+
         return $behaviors;
     }
 
@@ -38,7 +37,7 @@ class UserController extends Controller
 
     public function actionIndex()
     {
-        $model = new UserSearch();
+        $model = new PropertySearch();
         return $model->search(Yii::$app->request->get());
     }
 
@@ -47,14 +46,11 @@ class UserController extends Controller
         if (Yii::$app->request->isPost)
         {
             $post = \Yii::$app->request->getRawBody();
-            $model = new User();
-            if ($model->load(json_decode($post, true), ''))
+            $model = new Property();
+            $model->owner_id = Yii::$app->user->id;
+            if ($model->load(json_decode($post, true), '') && $model->save())
             {
-                $model->token = Yii::$app->security->generateRandomString();
-                if ($model->save())
-                    return true;
-                else
-                    return $model->getErrors();
+                return true;
             }
         }
 
@@ -63,19 +59,16 @@ class UserController extends Controller
 
     public function actionUpdate($id)
     {
-        $model = User::findOne($id);
+        $model = Property::findOne($id);
         if (!$model)
             throw new NotFoundHttpException();
 
         if (Yii::$app->request->isPut)
         {
             $post = \Yii::$app->request->getRawBody();
-            if ($model->load(json_decode($post, true), ''))
+            if ($model->load(json_decode($post, true), '') && $model->save())
             {
-                if ($model->save())
-                    return true;
-                else
-                    return $model->getErrors();
+                return true;
             }
         }
 
@@ -84,10 +77,19 @@ class UserController extends Controller
 
     public function actionDelete($id)
     {
-        $model = User::findOne($id);
+        $model = Property::findOne($id);
         if (!$model)
             throw new NotFoundHttpException();
 
         return $model->delete();
+    }
+
+    public function actionImages($id)
+    {
+        $model = Property::findOne($id);
+        if (!$model)
+            throw new NotFoundHttpException();
+
+        return $model->propertyImages;
     }
 }

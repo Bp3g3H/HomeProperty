@@ -18,6 +18,7 @@ class m220726_134528_user_table extends Migration
             'password' => $this->string(255),
             'token' => $this->string(255),
             'type' => $this->integer(1),
+            'image' => $this->text(),
         ]);
     }
 

@@ -12,6 +12,7 @@ use Yii;
  * @property string|null $password
  * @property string|null $token
  * @property int|null $type
+ * @property string|null $image
  */
 class UserBase extends \yii\db\ActiveRecord
 {
@@ -30,6 +31,7 @@ class UserBase extends \yii\db\ActiveRecord
     {
         return [
             [['type'], 'integer'],
+            [['image'], 'string'],
             [['email', 'password', 'token'], 'string', 'max' => 255],
         ];
     }
@@ -41,10 +43,11 @@ class UserBase extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'email' => 'email',
+            'email' => 'Email',
             'password' => 'Password',
             'token' => 'Token',
             'type' => 'Type',
+            'image' => 'Image',
         ];
     }
 }
