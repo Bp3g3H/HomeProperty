@@ -55,7 +55,8 @@ $config = [
                         'POST update/{id}' => 'update',
                         'POST create' => 'create',
                         'DELETE delete/{id}' => 'delete',
-                        'GET images/{id}' => 'images'
+                        'GET images/{id}' => 'images',
+                        'GET view/{id}' => 'view'
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d[\\d,]*>',

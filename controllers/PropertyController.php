@@ -24,6 +24,7 @@ class PropertyController extends Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => HttpHeaderAuth::class,
+            'optional' => ['index', 'view']
         ];
 
         return $behaviors;
@@ -91,5 +92,14 @@ class PropertyController extends Controller
             throw new NotFoundHttpException();
 
         return $model->propertyImages;
+    }
+
+    public function actionView($id)
+    {
+        $model = Property::findOne($id);
+        if (!$model)
+            throw new NotFoundHttpException();
+
+        return $model->attributes;
     }
 }
