@@ -11,11 +11,13 @@ use app\models\PropertyImage;
  * @property int $id
  * @property int $owner_id
  * @property string|null $headline
- * @property string|null $area
+ * @property int|null $area
  * @property float|null $price
  * @property string|null $city
  * @property string|null $street
  * @property string|null $description
+ * @property float|null $lat
+ * @property float|null $lng
  *
  * @property PropertyImage[] $propertyImages
  */
@@ -36,11 +38,10 @@ class PropertyBase extends \yii\db\ActiveRecord
     {
         return [
             [['owner_id'], 'required'],
-            [['owner_id'], 'integer'],
-            [['price'], 'number'],
+            [['owner_id', 'area'], 'integer'],
+            [['price', 'lat', 'lng'], 'number'],
             [['description'], 'string'],
             [['headline', 'city', 'street'], 'string', 'max' => 255],
-            [['area'], 'string', 'max' => 50],
         ];
     }
 
@@ -58,6 +59,8 @@ class PropertyBase extends \yii\db\ActiveRecord
             'city' => 'City',
             'street' => 'Street',
             'description' => 'Description',
+            'lat' => 'Lat',
+            'lng' => 'Lng',
         ];
     }
 

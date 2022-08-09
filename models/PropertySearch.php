@@ -3,13 +3,29 @@
 namespace app\models;
 
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\data\Sort;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 class PropertySearch extends Property
 {
+    public function attributes()
+    {
+        return ArrayHelper::merge(parent::attributes(), [
+            'image'
+        ]);
+    }
+
     public function search($params)
     {
-        $query = Property::find();
+        $query = (new Query());
+        $query->select([
+            'property.*',
+            'property_image.image'
+        ]);
+        $query->from('property');
+        $query->leftJoin('property_image', 'property_image.property_id = property.id');
 
         $this->load($params, '');
 
@@ -26,8 +42,8 @@ class PropertySearch extends Property
             ]
         ]);
 
-        return new ActiveDataProvider([
-            'query' => $query,
+        return new ArrayDataProvider([
+            'allModels' => $query->all(),
             'sort' => $sort,
         ]);
     }
