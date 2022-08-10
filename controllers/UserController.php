@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\User;
 use app\models\UserSearch;
+use yii\db\Query;
 use yii\filters\auth\HttpHeaderAuth;
 use yii\rest\ActiveController;
 use Yii;
@@ -89,5 +90,22 @@ class UserController extends Controller
             throw new NotFoundHttpException();
 
         return $model->delete();
+    }
+
+    public function actionAppointments($id)
+    {
+        $model = User::findOne($id);
+        if (!$model)
+            throw new NotFoundHttpException();
+
+        $query = (new Query())
+            ->from('appointment')
+            ->select([
+                'appointment.*',
+                'property.headline'
+            ])->leftJoin('property', 'appointment.property_id = property.id')
+            ->andWhere(['appointment.user_id' => $id]);
+
+        return $query->all();
     }
 }

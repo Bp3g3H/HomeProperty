@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Appointment;
 use app\models\Property;
 use app\models\PropertySearch;
 use yii\filters\auth\HttpHeaderAuth;
@@ -101,5 +102,22 @@ class PropertyController extends Controller
             throw new NotFoundHttpException();
 
         return $model->attributes;
+    }
+
+    public function actionAddAppointment()
+    {
+        $post = Yii::$app->request->getRawBody();
+        $post = json_decode($post, true);
+        if (!$post['time'] || !$post['name'] || !$post['property_id'])
+            throw new BadRequestHttpException('Provide time and name and property id');
+
+        $model = Property::findOne(['id' => 2]);
+        if (!$model)
+            throw new NotFoundHttpException();
+
+        if (Appointment::create($model->id, Yii::$app->user->id, $post['time'], $post['name']))
+            return true;
+        else
+            throw new BadRequestHttpException('Appointment can not be saved');
     }
 }

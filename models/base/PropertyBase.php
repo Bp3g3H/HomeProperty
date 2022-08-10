@@ -3,6 +3,7 @@
 namespace app\models\base;
 
 use Yii;
+use app\models\Appointment;
 use app\models\PropertyImage;
 
 /**
@@ -19,6 +20,7 @@ use app\models\PropertyImage;
  * @property float|null $lat
  * @property float|null $lng
  *
+ * @property Appointment[] $appointments
  * @property PropertyImage[] $propertyImages
  */
 class PropertyBase extends \yii\db\ActiveRecord
@@ -62,6 +64,16 @@ class PropertyBase extends \yii\db\ActiveRecord
             'lat' => 'Lat',
             'lng' => 'Lng',
         ];
+    }
+
+    /**
+     * Gets query for [[Appointments]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAppointments()
+    {
+        return $this->hasMany(Appointment::className(), ['property_id' => 'id']);
     }
 
     /**

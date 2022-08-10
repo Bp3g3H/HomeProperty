@@ -3,6 +3,7 @@
 namespace app\models\base;
 
 use Yii;
+use app\models\Appointment;
 
 /**
  * This is the model class for table "user".
@@ -13,6 +14,8 @@ use Yii;
  * @property string|null $token
  * @property int|null $type
  * @property string|null $image
+ *
+ * @property Appointment[] $appointments
  */
 class UserBase extends \yii\db\ActiveRecord
 {
@@ -49,5 +52,15 @@ class UserBase extends \yii\db\ActiveRecord
             'type' => 'Type',
             'image' => 'Image',
         ];
+    }
+
+    /**
+     * Gets query for [[Appointments]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAppointments()
+    {
+        return $this->hasMany(Appointment::className(), ['user_id' => 'id']);
     }
 }

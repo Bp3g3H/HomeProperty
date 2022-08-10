@@ -32,6 +32,7 @@ class PropertySearch extends Property
         $query->andFilterWhere(['like', 'headline', $this->headline]);
         $query->andFilterWhere(['like', 'city', $this->city]);
         $query->andFilterWhere(['like', 'street', $this->street]);
+        $query->groupBy('property.id');
 
         $sort = new Sort([
             'attributes' => [
