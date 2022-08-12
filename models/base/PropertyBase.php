@@ -19,6 +19,7 @@ use app\models\PropertyImage;
  * @property string|null $description
  * @property float|null $lat
  * @property float|null $lng
+ * @property int|null $type
  *
  * @property Appointment[] $appointments
  * @property PropertyImage[] $propertyImages
@@ -40,7 +41,7 @@ class PropertyBase extends \yii\db\ActiveRecord
     {
         return [
             [['owner_id'], 'required'],
-            [['owner_id', 'area'], 'integer'],
+            [['owner_id', 'area', 'type'], 'integer'],
             [['price', 'lat', 'lng'], 'number'],
             [['description'], 'string'],
             [['headline', 'city', 'street'], 'string', 'max' => 255],
@@ -63,6 +64,7 @@ class PropertyBase extends \yii\db\ActiveRecord
             'description' => 'Description',
             'lat' => 'Lat',
             'lng' => 'Lng',
+            'type' => 'Type',
         ];
     }
 

@@ -104,7 +104,7 @@ class UserController extends Controller
                 'appointment.*',
                 'property.headline'
             ])->leftJoin('property', 'appointment.property_id = property.id')
-            ->andWhere(['appointment.user_id' => $id]);
+            ->andWhere(['property.owner_id' => $id]);
 
         return $query->all();
     }

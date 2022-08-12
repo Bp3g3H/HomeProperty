@@ -111,7 +111,7 @@ class PropertyController extends Controller
         if (!$post['time'] || !$post['name'] || !$post['property_id'])
             throw new BadRequestHttpException('Provide time and name and property id');
 
-        $model = Property::findOne(['id' => 2]);
+        $model = Property::findOne(['id' => $post['property_id']]);
         if (!$model)
             throw new NotFoundHttpException();
 
