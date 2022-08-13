@@ -24,6 +24,11 @@ class Property extends PropertyBase
             $image->delete();
         }
 
+        foreach ($this->appointments as $appointment)
+        {
+            $appointment->delete();
+        }
+
         return parent::beforeDelete();
     }
 
