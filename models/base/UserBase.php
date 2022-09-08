@@ -4,6 +4,7 @@ namespace app\models\base;
 
 use Yii;
 use app\models\Appointment;
+use app\models\Comment;
 
 /**
  * This is the model class for table "user".
@@ -16,6 +17,7 @@ use app\models\Appointment;
  * @property string|null $image
  *
  * @property Appointment[] $appointments
+ * @property Comment[] $comments
  */
 class UserBase extends \yii\db\ActiveRecord
 {
@@ -62,5 +64,15 @@ class UserBase extends \yii\db\ActiveRecord
     public function getAppointments()
     {
         return $this->hasMany(Appointment::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Comments]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comment::className(), ['user_id' => 'id']);
     }
 }

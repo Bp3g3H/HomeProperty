@@ -94,10 +94,6 @@ class UserController extends Controller
 
     public function actionAppointments($id)
     {
-        $model = User::findOne($id);
-        if (!$model)
-            throw new NotFoundHttpException();
-
         $query = (new Query())
             ->from('appointment')
             ->select([

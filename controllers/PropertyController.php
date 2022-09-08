@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Appointment;
+use app\models\Comment;
 use app\models\Property;
 use app\models\PropertySearch;
 use yii\filters\auth\HttpHeaderAuth;
@@ -61,10 +62,7 @@ class PropertyController extends Controller
 
     public function actionUpdate($id)
     {
-        $model = Property::findOne($id);
-        if (!$model)
-            throw new NotFoundHttpException();
-
+        $model = $this->findModel($id);
         if (Yii::$app->request->isPut)
         {
             $post = \Yii::$app->request->getRawBody();
@@ -79,28 +77,19 @@ class PropertyController extends Controller
 
     public function actionDelete($id)
     {
-        $model = Property::findOne($id);
-        if (!$model)
-            throw new NotFoundHttpException();
-
+        $model = $this->findModel($id);
         return $model->delete();
     }
 
     public function actionImages($id)
     {
-        $model = Property::findOne($id);
-        if (!$model)
-            throw new NotFoundHttpException();
-
+        $model = $this->findModel($id);
         return $model->propertyImages;
     }
 
     public function actionView($id)
     {
-        $model = Property::findOne($id);
-        if (!$model)
-            throw new NotFoundHttpException();
-
+        $model = $this->findModel($id);
         return $model->attributes;
     }
 
@@ -111,13 +100,39 @@ class PropertyController extends Controller
         if (!$post['time'] || !$post['name'] || !$post['property_id'])
             throw new BadRequestHttpException('Provide time and name and property id');
 
-        $model = Property::findOne(['id' => $post['property_id']]);
-        if (!$model)
-            throw new NotFoundHttpException();
+        $model = $this->findModel($post['property_id']);
 
         if (Appointment::create($model->id, Yii::$app->user->id, $post['time'], $post['name']))
             return true;
         else
             throw new BadRequestHttpException('Appointment can not be saved');
+    }
+
+    public function actionAddComment()
+    {
+        $post = Yii::$app->request->getRawBody();
+        $post = json_decode($post, true);
+        if (!$post['message'] || !$post['property_id'])
+            throw new BadRequestHttpException('Provide time and name and property id');
+
+        $model = $this->findModel($post['property_id']);
+        if (Comment::create(Yii::$app->user->id, $model->id, $post['message']))
+            return true;
+        else
+            throw new BadRequestHttpException('Comment can not be saved');
+    }
+
+    public function actionComments($id)
+    {
+        $model = $this->findModel($id);
+        return $model->comments;
+    }
+
+    public function findModel($id)
+    {
+        $model = Property::findOne($id);
+        if (!$model)
+            throw new NotFoundHttpException();
+        return $model;
     }
 }

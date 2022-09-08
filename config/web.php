@@ -71,7 +71,9 @@ $config = [
                         'DELETE delete/{id}' => 'delete',
                         'GET images/{id}' => 'images',
                         'GET view/{id}' => 'view',
-                        'POST add-appointment' => 'add-appointment'
+                        'POST add-appointment' => 'add-appointment',
+                        'POST add-comment' => 'add-comment',
+                        'GET comments/{id}' => 'comments'
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d[\\d,]*>',
